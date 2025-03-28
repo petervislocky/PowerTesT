@@ -15,6 +15,8 @@ class Algorithms:
         return self.fib(n - 1) + self.fib(n - 2)
 
     def matrix_multiply(self, size: int) -> list[int]:
+        """ Does matrix multiplication based on the size given in params
+        """
         x = np.random.rand(size, size)
         y = np.rangom.rand(size, size)
         return np.dot(x, y)
