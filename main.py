@@ -3,6 +3,9 @@ import multiprocessing
 from components.algos import Algorithms
 
 def fibonacci_benchmark(n: int) -> None:
+    """ Just a helper method to keep the main method clean, does the actual calling of the fibonacci method and handles
+    spreading the workload across all cores
+    """
     stress = Algorithms()
     start = time.time()
     workers = multiprocessing.cpu_count()
