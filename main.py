@@ -2,11 +2,11 @@ import time
 import multiprocessing
 from components.algos import Algorithms
 
-def fibonacci_stress_test(n):
+def fibonacci_benchmark(n: int) -> None:
     stress = Algorithms()
     start = time.time()
     workers = multiprocessing.cpu_count()
-    print('Starting stress test with fibonacci sequence...')
+    print('Starting benchmark with fibonacci sequence...')
     with multiprocessing.Pool(processes=workers) as pool:
         for i in range(n + 1):
             # okay this is cool, when i originally tried to print(F({i})) it printed 38 every time because the lambda was just referencing the i variable and wasn't
@@ -20,21 +20,21 @@ def fibonacci_stress_test(n):
     print(f'Time to complete: {end - start:.4f} seconds')
 
 def main():
-    print('Stress Test\nExecutes algorithm across all cores to evenly stress processor')
-    num = input('Choose how hard to stress the processor\n'
+    print('========Benchmark========\nThis calculates all numbers in the Fibonacci sequence up to the selected value\nUse to benchmark processor speed')
+    num = input('Select how high in the Fibonacci sequence to calculate up to\n'
                 '1 = Low F(30)\n'
                 '2 = Mid F(39)\n'
                 '3 = High F(45)\n'
                 '4 = Extreme F(52) *WARNING* This option WILL take a long time\n')
     match num:
         case '1':
-            fibonacci_stress_test(30)
+            fibonacci_benchmark(30)
         case '2':
-            fibonacci_stress_test(39)
+            fibonacci_benchmark(39)
         case '3':
-            fibonacci_stress_test(45)
+            fibonacci_benchmark(45)
         case '4':
-            fibonacci_stress_test(52)
+            fibonacci_benchmark(52)
         case _:
             print('Invalid selection try again')
 
