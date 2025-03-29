@@ -8,9 +8,9 @@ def fibonacci_benchmark(n: int) -> None:
     """
     
     stress = Algorithms()
-    start = time.time()
     workers = multiprocessing.cpu_count()
     print('Starting benchmark with fibonacci sequence...')
+    start = time.time()
     
     with multiprocessing.Pool(processes=workers) as pool:
         for i in range(n + 1):
@@ -21,8 +21,8 @@ def fibonacci_benchmark(n: int) -> None:
             results so I can print each fibonacci number as it is calculated rather than a list of results at the end which happens with pool.map()
             """
             pool.apply_async(stress.fib, args=(i,), callback=lambda result, i = i: print(f'F({i}) = {result}'))
-        pool.close()
-        pool.join()
+        # pool.close()
+        # pool.join()
     
     end = time.time()
     print(f'Time to complete: {end - start:.4f} seconds')
@@ -52,6 +52,22 @@ def main():
                 else:
                     print('Invalid selection, try again')
                     continue
+        
+        case '2':
+            # testing
+            stress = Algorithms()
+            size = 4000
+            workers = multiprocessing.cpu_count()
+            
+            print(f'Running matrix multiplication with {workers} workers...')
+            start = time.time()
+            
+            with multiprocessing.Pool(processes=workers) as pool:
+                pool.map(stress.matrix_multiply, [size] * workers)
+            
+            end = time.time()
+            print(f'Time to complete {end - start:.4f} seconds')
+
         
         case _:
             print('Invalid selection, try again')

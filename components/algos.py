@@ -18,5 +18,5 @@ class Algorithms:
         """ Does matrix multiplication based on the size given in params
         """
         x = np.random.rand(size, size)
-        y = np.rangom.rand(size, size)
+        y = np.random.rand(size, size)
         return np.dot(x, y)
