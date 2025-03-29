@@ -1,9 +1,9 @@
 import numpy as np
-import multiprocessing
 
 
 class Algorithms:
 
+    
     def __init__(self):
         pass
 
