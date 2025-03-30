@@ -21,8 +21,8 @@ def fibonacci_benchmark(n: int) -> None:
             results so I can print each fibonacci number as it is calculated rather than a list of results at the end which happens with pool.map()
             """
             pool.apply_async(stress.fib, args=(i,), callback=lambda result, i = i: print(f'F({i}) = {result}'))
-        # pool.close()
-        # pool.join()
+        pool.close()
+        pool.join()
     
     end = time.time()
     print(f'Time to complete: {end - start:.4f} seconds')
