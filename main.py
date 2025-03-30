@@ -51,24 +51,34 @@ def main():
                     break
                 else:
                     print('Invalid selection, try again')
-                    continue
-        
+                    continue        
         case '2':
-            # testing
             stress = Algorithms()
-            size = 4000
+            size = 5000
             workers = multiprocessing.cpu_count()
             
-            print(f'Running matrix multiplication with {workers} workers...')
-            start = time.time()
+            while True:
+                try:
+                    duration = int(input('Enter time (in seconds) to stress test for >> '))
+                    break
+                except ValueError as e:
+                    print('Not a valid value')
+                    continue
+            
+            end_time = time.time() + duration
             
             with multiprocessing.Pool(processes=workers) as pool:
-                pool.map(stress.matrix_multiply, [size] * workers)
+                while time.time() < end_time:
+                    pool.map(stress.matrix_multiply, [size] * workers)
             
-            end = time.time()
-            print(f'Time to complete {end - start:.4f} seconds')
-
-        
+            print('Stress test complete!')
+        case '3':
+            # testing
+            stress = Algorithms()
+            workers = multiprocessing.cpu_count()
+            size = 500 * 1024 * 1024
+            stress.memory_stress(size, 30)
+                
         case _:
             print('Invalid selection, try again')
 
