@@ -32,7 +32,8 @@ def main():
     
     test_select = input('Choose a test to run\n'
                         '1 CPU speed benchmark\n'
-                        '2 CPU stress test\n')
+                        '2 CPU stress test\n'
+                        '3 Memory stress test\n')
     
     match test_select:
         case '1':
