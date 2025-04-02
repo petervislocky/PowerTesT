@@ -1,5 +1,6 @@
 import time
 import multiprocessing
+import psutil
 from components.algos import Algorithms
 
 def fibonacci_benchmark(n: int) -> None:
@@ -14,7 +15,6 @@ def fibonacci_benchmark(n: int) -> None:
     
     with multiprocessing.Pool(processes=workers) as pool:
         for i in range(n + 1):
-
             """ okay this is cool, when i originally tried to print(F({i})) it printed 39 every time because the lambda was just referencing the i variable and wasn't
             capturing the value during every iteration of the loop, but when you set a param as i = i it captures the actual value, every iteration
             also this uses multiprocessing.Pool to use all cpu cores to calculate the function each to stress the processor more, and async allows me to get live
@@ -29,7 +29,6 @@ def fibonacci_benchmark(n: int) -> None:
 
 def main():
     print('========================PowerTesT========================')
-    
     test_select = input('Choose a test to run\n'
                         '1 CPU speed benchmark\n'
                         '2 CPU stress test\n'
@@ -66,20 +65,23 @@ def main():
                     print('Not a valid value')
                     continue
             
-            end_time = time.time() + duration
+            start_time = time.time()
             
             with multiprocessing.Pool(processes=workers) as pool:
-                while time.time() < end_time:
-                    pool.map(stress.matrix_multiply, [size] * workers)
+                while time.time() - start_time < duration:
+                    pool.map(stress.matrix_multiply, [size] * workers) # use pool.apply_async instead to fix running longer than duration issue
             
-            print('Stress test complete!')
+            print(f'{duration} second stress test complete!')
+            
         case '3':
-            # testing
+            WORKERS = multiprocessing.cpu_count()
+
             stress = Algorithms()
-            workers = multiprocessing.cpu_count()
-            size = 500 * 1024 * 1024
-            stress.memory_stress(size, 30)
-                
+            size = psutil.virtual_memory().available
+            duration = int(input('Enter time (in seconds) to stress test memory for >> '))
+            stress.memory_stress(size, duration)
+            
+            print(f'{duration} second stress test complete!')
         case _:
             print('Invalid selection, try again')
 

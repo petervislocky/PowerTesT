@@ -24,8 +24,9 @@ class Algorithms:
     def memory_stress(self, size, duration):
         """ Creates an array of random bytes and continually makes copies of it and rewrites the new copies over the same vaiable over and over, to stress memory
         """
-        # this sucks make it better
-        arr = np.random.bytes(size)
+        arr = bytearray(size)
         start_time = time.time()
+
         while time.time() - start_time < duration:
             arr_copy = arr[:]
+            arr[:] = arr[::-1]
