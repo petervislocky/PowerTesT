@@ -69,7 +69,7 @@ def main():
             
             with multiprocessing.Pool(processes=workers) as pool:
                 while time.time() - start_time < duration:
-                    pool.map(stress.matrix_multiply, [size] * workers) # use pool.apply_async instead to fix running longer than duration issue
+                    pool.apply_async(stress.matrix_multiply, [size] * workers) # use pool.apply_async instead of pool.map to fix running longer than duration issue
             
             print(f'{duration} second stress test complete!')
             
