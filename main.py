@@ -37,7 +37,9 @@ def main():
     match test_select:
         case '1':
             fib_options = {'1': 30, '2': 39, '3': 45, '4': 52}
-            print('========================Benchmark========================\nThis calculates all numbers in the Fibonacci sequence up to the selected value\nUse to benchmark processor speed')
+            print('========================CPU Benchmark========================\n'
+                  'This calculates all numbers in the Fibonacci sequence up to the selected value\n'
+                  'Use to benchmark processor speed')
             
             while True:
                 num = input('Select how high in the Fibonacci sequence to calculate up to\n'
@@ -51,8 +53,11 @@ def main():
                     break
                 else:
                     print('Invalid selection, try again')
-                    continue        
+                    continue
+
         case '2':
+            print('========================CPU Stress Test========================\n'
+                  'This test is running matrix multiplication which stresses the FPU/ALUs within the processor as well as stressing memory bandwidth')
             stress = Algorithms()
             size = 5000
             workers = multiprocessing.cpu_count()
@@ -64,24 +69,35 @@ def main():
                 except ValueError as e:
                     print('Not a valid value')
                     continue
-            
+
             start_time = time.time()
             
-            with multiprocessing.Pool(processes=workers) as pool:
-                while time.time() - start_time < duration:
-                    pool.apply_async(stress.matrix_multiply, [size] * workers) # use pool.apply_async instead of pool.map to fix running longer than duration issue
+            try:
+                with multiprocessing.Pool(processes=workers) as pool:
+                    while time.time() - start_time < duration:
+                        pool.apply_async(stress.matrix_multiply, [size] * workers) # used pool.apply_async instead of pool.map to fix running longer than duration issue
+                
+                print(f'{duration} second stress test complete!')
             
-            print(f'{duration} second stress test complete!')
-            
-        case '3':
-            WORKERS = multiprocessing.cpu_count()
+            except KeyboardInterrupt as e:
+                print('Keyboard interrupt detected, aborting stress test')
 
+        case '3':
+            print('========================RAM Stress Test========================\n'
+                  'Allocates available memory to a massive array and then copies and reverses the array for set amount of time')
             stress = Algorithms()
             size = psutil.virtual_memory().available
-            duration = int(input('Enter time (in seconds) to stress test memory for >> '))
-            stress.memory_stress(size, duration)
+            size_in_mb = size / 1024**3
+            print(f'{size_in_mb:.2f} GB of available memory detected *NOTE* this is not total memory, just memory available for the stress test to use')
             
-            print(f'{duration} second stress test complete!')
+            try:
+                duration = int(input('Enter time (in seconds) to stress test memory for >> '))
+                stress.memory_stress(size, duration)
+                print(f'{duration} second stress test complete!')
+            
+            except KeyboardInterrupt as e:
+                print('Keyboard interrupt detected, aborting stress test')
+        
         case _:
             print('Invalid selection, try again')
 
