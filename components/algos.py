@@ -14,6 +14,7 @@ class Algorithms:
             return 1
         return self.fib(n - 1) + self.fib(n - 2)
 
+    # replace this with a better algo
     def matrix_multiply(self, size: int) -> list[int]:
         """ Does matrix multiplication based on the size given in params
         """
@@ -21,13 +22,3 @@ class Algorithms:
         y = np.random.rand(size, size)
         return np.dot(x, y)
     
-    def memory_stress(self, size, duration):
-        """ Creates an array of random bytes and continually makes copies of it and rewrites the new copies over the same vaiable over and over, to stress memory
-        """
-        # This is stupid and doesnt work, use chunks of memory instead of one giant array use libraries isntead of doing this manually
-        arr = bytearray(size)
-        start_time = time.time()
-
-        while time.time() - start_time < duration:
-            arr_copy = arr[:]
-            # arr[:] = arr[::-1]

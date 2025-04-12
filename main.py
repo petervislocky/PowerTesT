@@ -31,8 +31,7 @@ def main():
     print('========================PowerTesT========================')
     test_select = input('Choose a test to run\n'
                         '1 CPU speed benchmark\n'
-                        '2 CPU stress test\n'
-                        '3 Memory stress test\n')
+                        '2 CPU stress test\n')
     
     match test_select:
         case '1':
@@ -77,22 +76,6 @@ def main():
                     while time.time() - start_time < duration:
                         pool.apply_async(stress.matrix_multiply, [size] * workers) # used pool.apply_async instead of pool.map to fix running longer than duration issue
                 
-                print(f'{duration} second stress test complete!')
-            
-            except KeyboardInterrupt as e:
-                print('Keyboard interrupt detected, aborting stress test')
-
-        case '3':
-            print('========================RAM Stress Test========================\n'
-                  'Allocates available memory to a massive array and then copies and reverses the array for set amount of time')
-            stress = Algorithms()
-            size = psutil.virtual_memory().available
-            size_in_mb = size / 1024**3
-            print(f'{size_in_mb:.2f} GB of available memory detected *NOTE* this is not total memory, just memory available for the stress test to use')
-            
-            try:
-                duration = int(input('Enter time (in seconds) to stress test memory for >> '))
-                stress.memory_stress(size, duration)
                 print(f'{duration} second stress test complete!')
             
             except KeyboardInterrupt as e:
