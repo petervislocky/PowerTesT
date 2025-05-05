@@ -1,7 +1,7 @@
 import time
 import multiprocessing
-import psutil
 from components.algos import Algorithms
+from components.c_stress_runner import get_core_count, start_stress_test, stop_stress_test 
 
 def fibonacci_benchmark(n: int) -> None:
     """ Just a helper method to keep the main method clean, does the actual calling of the fibonacci method and handles
