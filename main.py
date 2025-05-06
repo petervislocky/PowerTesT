@@ -31,7 +31,7 @@ def main():
     print('========================PowerTesT========================')
     test_select = input('Choose a test to run\n'
                         '1 CPU speed benchmark\n'
-                        '2 CPU stress test\n')
+                        '2 CPU stress test\n>> ')
     
     match test_select:
         case '1':
@@ -45,7 +45,7 @@ def main():
                             '1 = Low F(30)\n'
                             '2 = Mid F(39)\n'
                             '3 = High F(45)\n'
-                            '4 = Extreme F(52) *WARNING* This option WILL take a long time\n')
+                            '4 = Extreme F(52) *WARNING* This option WILL take a long time\n>> ')
                 
                 if num in fib_options:
                     fibonacci_benchmark(fib_options[num])
@@ -56,30 +56,21 @@ def main():
 
         case '2':
             print('========================CPU Stress Test========================\n'
-                  'This test is running matrix multiplication which stresses the FPU/ALUs within the processor as well as stressing memory bandwidth')
-            stress = Algorithms()
-            size = 5000
-            workers = multiprocessing.cpu_count()
-            
+                  'This test runs a low-level algorithm written in C to maximize CPU usage on either single or multiple cores')
+
+            while True:
+                mode = input('Select mode:\n1 = Stress single core\n2 = Stress all cores\n>> ')
+                if mode in ['1', '2']:
+                    break
+                else:
+                    print(f'Invalid selection "{mode}". Valid options are 1 or 2')
+
             while True:
                 try:
                     duration = int(input('Enter time (in seconds) to stress test for >> '))
                     break
-                except ValueError as e:
-                    print('Not a valid value')
-                    continue
-
-            start_time = time.time()
-            
-            try:
-                with multiprocessing.Pool(processes=workers) as pool:
-                    while time.time() - start_time < duration:
-                        pool.apply_async(stress.matrix_multiply, [size] * workers) # used pool.apply_async instead of pool.map to fix running longer than duration issue
-                
-                print(f'{duration} second stress test complete!')
-            
-            except KeyboardInterrupt as e:
-                print('Keyboard interrupt detected, aborting stress test')
+                except ValueError:
+                    print(f'Invalid selection "{duration}". Try again')
         
         case _:
             print('Invalid selection, try again')
