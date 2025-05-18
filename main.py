@@ -57,14 +57,7 @@ def main():
         case '2':
             print('========================CPU Stress Test========================\n'
                   'This test runs a low-level algorithm written in C to maximize CPU usage on either single or multiple cores')
-
-            while True:
-                mode = input('Select mode:\n1 = Stress single core\n2 = Stress all cores\n>> ')
-                if mode in ['1', '2']:
-                    break
-                else:
-                    print(f'Invalid selection, "{mode}". Valid options are 1 or 2')
-
+ 
             while True:
                 try:
                     duration = int(input('Enter time (in seconds) to stress test for >> '))
@@ -72,12 +65,11 @@ def main():
                 except ValueError:
                     print(f'Not a valid value, "{duration}". Try again')
                 
-            is_all_cores = mode == '2'
-            core_count = get_core_count() if is_all_cores else 1
+            core_count = get_core_count()
             # right now only linux binary is compiled and supported
             binary_path = './c/stress_core'
 
-            print(f'Starting stress test on {'all' if is_all_cores else 'single'} core(s) for {duration} seconds...')
+            print(f'Starting all core stress test for {duration} seconds...')
             processes = start_stress_test(binary_path, core_count)
 
             try:
